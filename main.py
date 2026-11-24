@@ -1,5 +1,6 @@
 import torch
 import torchvision.datasets as datasets
+from torch.utils.data import Subset  # add subset import for dataset restriction
 from torchvision import transforms
 from utils import load_config
 from model_fnn import VariationalAutoEncoder
@@ -10,6 +11,7 @@ transform = transforms.Compose([
     transforms.ToTensor(),
 ])
 
+# Baseline dataset loader
 train_dataset = datasets.MNIST(
     root='data',
     train=True,
@@ -17,6 +19,13 @@ train_dataset = datasets.MNIST(
     target_transform=None,
     download=True
 )
+
+# --- RESTRICT DATASET SIZE HERE ---
+subset_size = 5000  # Change this to your desired size
+train_dataset = Subset(train_dataset, list(range(subset_size)))
+print (len(train_dataset)) # ensure the dataset is restricted to the desired size
+# ----------------------------------
+
 
 test_dataset = datasets.MNIST(
     root='data',
