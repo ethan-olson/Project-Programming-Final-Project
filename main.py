@@ -6,6 +6,7 @@ from utils import load_config
 from model_fnn import VariationalAutoEncoder
 from trainer import Trainer
 
+# ================ BASELINE PREPROCESSING AND DATA LOADING ========================
 # Data preprocessing with normalization
 transform = transforms.Compose([
     transforms.ToTensor(),
@@ -19,12 +20,38 @@ train_dataset = datasets.MNIST(
     target_transform=None,
     download=True
 )
+# =================================================================================
 
-# --- RESTRICT DATASET SIZE HERE ---
+
+# ======================= DATA AUGMENTATION FOR TRAINING ==========================
+train_transform = transforms.Compose([
+    transforms.RandomRotation(
+        degrees=15
+    ),  # Rotate randomly between -15 and +15 degrees
+        # Have to avoid flips/mirrors because they could change the digit's meaning 
+        # (e.g., 6 becomes 9, 8 stays the same, etc.)
+    transforms.ToTensor(),
+])
+
+# Keep test transform clean (no random augmentation during evaluation!)
+test_transform = transforms.Compose([transforms.ToTensor()])
+
+# Load datasets with respective transforms
+train_dataset = datasets.MNIST(
+    root='data', train=True, transform=train_transform, download=True
+)
+
+test_dataset = datasets.MNIST(
+    root='data', train=False, transform=test_transform, download=True
+)
+# =================================================================================
+
+
+# ================ RESTRICT DATASET SIZE HERE =====================================
 subset_size = 5000  # Change this to your desired size
 train_dataset = Subset(train_dataset, list(range(subset_size)))
 print (len(train_dataset)) # ensure the dataset is restricted to the desired size
-# ----------------------------------
+# =================================================================================
 
 
 test_dataset = datasets.MNIST(
