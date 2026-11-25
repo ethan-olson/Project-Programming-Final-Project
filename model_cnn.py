@@ -2,9 +2,9 @@ import torch
 import torch.nn as nn
 from torch.nn import functional as F
 
-class VariationalAutoEncoder(nn.Module):
+class ConvolutionalVAE(nn.Module):
     def __init__(self, input_dim, latent_dim, activation="sigmoid"):
-        super(VariationalAutoEncoder, self).__init__()
+        super(ConvolutionalVAE, self).__init__()
         self.activation = activation
         
         self.en_fc = nn.Sequential(
@@ -60,6 +60,6 @@ class VariationalAutoEncoder(nn.Module):
 if __name__ == "__main__":
 
     x = torch.randn(2, 1, 28, 28)
-    model = VariationalAutoEncoder(input_dim=None, latent_dim=256)
+    model = ConvolutionalVAE(input_dim=None, latent_dim=256)
 
     print(model(x))

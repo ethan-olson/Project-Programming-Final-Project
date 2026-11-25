@@ -6,19 +6,20 @@ experiment:
 
 model:
   input_dim: 784  # 28x28 MNIST images flattened
-  latent_dim: 8  
-  activation: "linear" # sigmoid, (else will be linear)
+  latent_dim: 64  # originally 8
+  activation: "sigmoid" # sigmoid, (else will be linear)
+  # originally linear ^
 
 training:
   optimizer: "Adam"  # Options: Adam, SGD
   learning_rate: 0.001  
   weight_decay: 0.0
   # momentum: 0.9  # Only used for SGD
-  beta: 1.0
-  beta_warmup_epochs: 20   
-  epochs: 61              
+  beta: 0.5  # originally 1.0
+  beta_warmup_epochs: 20  # orignially 20   
+  epochs: 31              
   batch_size: 100  
-  reduction: "sum"    # Options: sum or mean
+  reduction: "mean"    # Options: sum or mean
 
 data:
   dataset: "MNIST"
